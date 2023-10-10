@@ -1,5 +1,26 @@
-import { db_places } from "../../../lib/db_places";
+import dbConnect from "../../../db/connect.js";
+import Place from "../../../db/models/Place";
 
-export default function handler(request, response) {
-  return response.status(200).json(db_places);
+export default async function handler(request, response) {
+  await dbConnect();
+  console.log(request.query);
+  if (request.method === "GET") {
+    const places = await Place.find();
+    return response.status(201).json(places);
+  }
+
+  if (request.method === "POST") {
+    try {
+      const placeData = request.body;
+      await Place.create(placeData);
+      // const place = await new Place(placeData);
+      // await place.save();
+      return response.status(201).json({ status: "Place created." });
+    } catch (error) {
+      console.error(error);
+      return response.status(400).json({ error: error.message });
+    }
+  }
+
+  // return response.status(200).json(db_places);
 }
