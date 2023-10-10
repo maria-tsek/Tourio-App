@@ -1,20 +1,20 @@
-import dbConnect from "../../../db/connect.js";
-import Place from "../../../db/models/Place";
 
+import dbConnect from "../../../db/connect";
+import Place from "../../../db/models/place";
 export default async function handler(request, response) {
   await dbConnect();
-  console.log(request.query);
   if (request.method === "GET") {
     const places = await Place.find();
-    return response.status(201).json(places);
+    console.log(places);
+    return response.status(200).json(places);
+  } else {
+    return response.status(404).json({ error: "Not Found" });
   }
-
-  if (request.method === "POST") {
+    if (request.method === "POST") {
     try {
       const placeData = request.body;
       await Place.create(placeData);
-      // const place = await new Place(placeData);
-      // await place.save();
+  
       return response.status(201).json({ status: "Place created." });
     } catch (error) {
       console.error(error);
@@ -22,5 +22,3 @@ export default async function handler(request, response) {
     }
   }
 
-  // return response.status(200).json(db_places);
-}
