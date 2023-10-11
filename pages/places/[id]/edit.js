@@ -31,15 +31,21 @@ export default function EditPage() {
     }
   }
 
-  if (!isReady || isLoading || error) return <h2>Loading...</h2>;
+  if (!isReady || isLoading || error) {
+    return <h2>Loading...</h2>;
+  }
 
   return (
     <>
       <h2 id="edit-place">Edit Place</h2>
-      <Link href={`/places/${id}`} passHref legacyBehavior>
-        <StyledLink justifySelf="start">back</StyledLink>
+      <Link href={`/places/${id}`}>
+        <StyledLink justifySelf="start">Back</StyledLink>
       </Link>
-      <Form onSubmit={editPlace} formName={"edit-place"} defaultData={place} />
+      {place ? (
+        <Form onSubmit={editPlace} formName="edit-place" defaultData={place} />
+      ) : (
+        <p>Place not found</p>
+      )}
     </>
   );
 }
