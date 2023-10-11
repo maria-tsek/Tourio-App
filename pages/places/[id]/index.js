@@ -33,11 +33,7 @@ export default function DetailsPage() {
   const router = useRouter();
   const { isReady } = router;
   const { id } = router.query;
-  const {
-    data: { place, comments } = {},
-    isLoading,
-    error,
-  } = useSWR(`/api/places/${id}`);
+  const { data: place = {}, isLoading, error } = useSWR(`/api/places/${id}`);
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
 
@@ -76,7 +72,7 @@ export default function DetailsPage() {
           Delete
         </StyledButton>
       </ButtonContainer>
-      <Comments locationName={place.name} comments={comments} />
+      {/* <Comments locationName={place.name} comments={comments} /> */}
     </>
   );
 }

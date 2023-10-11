@@ -12,7 +12,6 @@ export default function EditPage() {
 
   async function editPlace(updatedPlace) {
     try {
-      // Send a PATCH request to update the place
       const response = await fetch(`/api/places/${id}`, {
         method: "PATCH",
         headers: {
@@ -23,6 +22,7 @@ export default function EditPage() {
 
       if (response.ok) {
         console.log("Place updated successfully.");
+        router.push(`/places/${id}`);
       } else {
         console.error("Failed to update place.");
       }
