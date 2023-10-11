@@ -33,12 +33,33 @@ export default function DetailsPage() {
   const router = useRouter();
   const { isReady } = router;
   const { id } = router.query;
-  const { data: place = {}, isLoading, error } = useSWR(`/api/places/${id}`);
+
+
+  const {
+    data: { place, comments } = {},
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(`/api/places/${id}`);
+
+ 
+
+  // const { mutate } = useSWR("/");
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
 
-  function deletePlace() {
-    console.log("deleted?");
+  async function deletePlace() {
+    // console.log("deleted?", place._id);
+    const response = await fetch(`/api/places/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(place),
+    });
+
+    if (response.ok) {
+      router.push("/");
+      mutate;
+    }
   }
 
   return (
