@@ -35,7 +35,7 @@ export default function DetailsPage() {
   const { id } = router.query;
 
   const {
-    data: { place } = {},
+    data: place = {},
     isLoading,
     error,
     mutate,
@@ -104,6 +104,7 @@ export default function DetailsPage() {
         comments={place.comments}
         addComment={addComment}
       />
+
     </>
   );
 }
