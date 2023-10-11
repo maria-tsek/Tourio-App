@@ -8,9 +8,29 @@ export default async function handler(request, response) {
   if (request.method === "GET") {
     const place = await Place.findById(id);
 
-    if (!place) {
-      return response.status(404).json({ status: "Not Found" });
+    return response.status(200).json(place);
+  } else if (request.method === "POST") {
+    try {
+      const placeData = request.body;
+      await Place.create(placeData);
+      return response.status(201).json({ status: "Place created." });
+    } catch (error) {
+      console.error(error);
+      return response.status(400).json({ error: error.message });
+
     }
+  } else if (request.method === "PATCH") {
+    try {
+      const place = await Place.findById(id);
+      if (!place) {
+        return response.status(404).json({ status: "Not Found" });
+      }
+
+
+      const updatedPlace = request.body;
+      console.log("updated:", updatedPlace);
+      place.set(updatedPlace);
+      await place.save();
 
     response.status(200).json({ place });
   }
@@ -26,9 +46,12 @@ export default async function handler(request, response) {
   //   allCommentIds.includes(comment._id.$oid)
   // );
 
-  //   if (!place) {
-  //     return response.status(404).json({ status: "Not found" });
-  //   }
 
-  //   response.status(200).json({ place: place, comments: comments });
+      return response.status(200).json({ status: "Place updated" });
+    } catch (error) {
+      return response.status(500).json({ status: "Internal Server Error" });
+    }
+  } else {
+    return response.status(405).end();
+  }
 }
