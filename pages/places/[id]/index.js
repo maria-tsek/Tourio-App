@@ -40,13 +40,9 @@ export default function DetailsPage() {
     error,
     mutate,
   } = useSWR(`/api/places/${id}`);
-
-  // const { mutate } = useSWR("/");
-
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
 
   async function deletePlace() {
-    // console.log("deleted?", place._id);
     const response = await fetch(`/api/places/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -55,7 +51,20 @@ export default function DetailsPage() {
 
     if (response.ok) {
       router.push("/");
-      mutate;
+      mutate();
+    }
+  }
+
+  async function addComment(comment) {
+    const response = await fetch(`/api/places/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(comment),
+    });
+
+    if (response.ok) {
+      router.push(`/places/${id}`);
+      mutate();
     }
   }
 
@@ -90,7 +99,12 @@ export default function DetailsPage() {
           Delete
         </StyledButton>
       </ButtonContainer>
-      {/* <Comments locationName={place.name} comments={comments} /> */}
+      <Comments
+        locationName={place.name}
+        comments={place.comments}
+        addComment={addComment}
+      />
+
     </>
   );
 }

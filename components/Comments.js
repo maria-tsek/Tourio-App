@@ -2,23 +2,28 @@ import styled from "styled-components";
 import { FormContainer, Input, Label } from "./Form";
 import { StyledButton } from "./StyledButton.js";
 
-export default function Comments({ locationName, comments }) {
-  const Article = styled.article`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 5px solid black;
-    border-radius: 0.8rem;
-    padding: 0.5rem;
-    text-align: center;
-    p {
-      border-bottom: solid 1px black;
-      padding: 20px;
-    }
-  `;
+const Article = styled.article`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 5px solid black;
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+  text-align: center;
+  p {
+    border-bottom: solid 1px black;
+    padding: 20px;
+  }
+`;
 
+export default function Comments({ locationName, comments, addComment }) {
   function handleSubmitComment(e) {
     e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    addComment(data);
+    e.target.reset();
+    e.target.name.focus();
   }
 
   return (
