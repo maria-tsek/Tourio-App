@@ -7,13 +7,17 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     const place = await Place.findById(id);
-    console.log("place:", place);
 
     if (!place) {
       return response.status(404).json({ status: "Not Found" });
     }
 
     response.status(200).json({ place });
+  }
+
+  if (request.method === "DELETE") {
+    await Place.findByIdAndDelete(id);
+    response.status(200).json({ status: `Place ${id} successfully deleted.` });
   }
 
   // const comment = place?.comments;
