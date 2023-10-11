@@ -21,9 +21,4 @@ export default async function handler(request, response) {
       response.status(400).json({ error: error.message });
     }
   }
-  // if (request.method === "DELETE") {
-  //   console.log(request.body);
-  //   const response = await Place.findOne(id);
-  //   console.log(response);
-  // }
 }
